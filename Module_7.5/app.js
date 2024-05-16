@@ -38,7 +38,7 @@ const displayProducts = (data) => {
             mealContainer.appendChild(mealDiv);
         });
     } else {
-        mealContainer.innerHTML = '<p>No meals found.</p>';
+        mealContainer.innerHTML = `<h4 class="text-danger ">No meals found.</h4> `;
     }
 };
 
