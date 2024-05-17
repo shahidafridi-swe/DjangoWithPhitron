@@ -113,7 +113,7 @@ const viewSingleProduct = (player) => {
                     <p class="card-title text-info">Play: ${player.strSport} </p>
                     <p class="card-title text-info">Position: ${player.strPosition} </p>
                     <p class="text-white">${player.strDescriptionEN.slice(0,100)}</p>
-                    <p class="text-white"><small class="text-body-secondary">Gender: ${player.strGender} </small></p>
+                    <p class="text-white"><small class="text-white">Gender: ${player.strGender} </small></p>
                 </div>
             </div>
         </div>
@@ -202,6 +202,8 @@ const viewAddedPlayers = () => {
 }
 
 const removeFormTeam = (playerID) => {
+    document.getElementById(`add-player-button-${playerID}`).disabled = false;
+    document.getElementById(`add-player-button-${playerID}`).innerText = "Add To Team";
     addedPlayers = addedPlayers.filter(player => player.idPlayer != playerID);
     viewAddedPlayers();
 
