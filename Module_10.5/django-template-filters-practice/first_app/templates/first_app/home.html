@@ -9,7 +9,61 @@
 <hr>
 <h1>This is home page</h1>
 <hr>
-
 <h6>Name: {{name}}</h6>
+<p>Age: {{ age | add:"4" }}</p>
+
+<p>Bio: {{bio | addslashes}}</p>
+
+<p>School: {{school | capfirst}}</p>
+
+<p>School: {{school | center:"20"}}</p>
+
+<p>Bio: {{bio | cut:" "}}</p>
+
+
+<p>Job: {{ job | default:"nothing"}}</p>
+
+<p>Friends: {{ friends | dictsort:"name" }}</p>
+<p>Total Friends: {{ friends | length }}</p>
+
+<p>Age divisibleby 5: {{ age | divisibleby:"5" }}</p>
+
+<p>First Hobby: {{ hobby | first }}</p>
+<p>Last Hobby: {{ hobby | last }}</p>
+<p>Hobbies: {{ hobby | join:", " }}</p>
+
+<p>Certificate: {{ certificate | linenumbers }}</p>
+<p>Certificate: {{ certificate | linenumbers | lower }}</p> 
+
+<p>Name List: {{ name | make_list }}</p>
+
+<p>Random Hobby: {{ hobby | random }}</p>
+
+{% comment %} <p>Adding Hobby: {{ hobby | add:"['Gaming', 'Biking']" }}</p> {% endcomment %}
+
+<p>Slice Hobby: {{ hobby | slice:":2" }}</p>
+
+<p>Certificate: {{ certificate | slugify }}</p>
+
+
+<p>Published at: {{published | time:"H:i" }}</p>
+<p>Published at: {{published | time:"H\h i\m" }}</p>
+<p>Published at: {{published | date:"SHORT_DATE_FORMAT" }}</p>
+<p>Published at: {{published | date }}</p>
+<p>Published at: {{published | date:"D d M Y"}}</p>
+
+
+<p>School: {{school | title }}</p>
+
+<p>School: {{school | wordcount }}</p>
+
+<p>School: {{school | truncatechars:5 }}</p>
+<p>School: {{school | truncatewords:2 }}</p>
+
+<p>You have {{ hobby | length }} hobby{{ hobby | length | pluralize}}</p>
+<p>You have {{ hobby | length }} hobby{{ hobby | length | pluralize:"ies"}}</p>
+<p>You have {{ hobby | length }} hobb{{ hobby | length | pluralize:"y,ies"}}</p>
+
+
 
 {% endblock content %}
