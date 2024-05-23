@@ -16,7 +16,6 @@
 
 <p>School: {{school | capfirst}}</p>
 
-<p>School: {{school | center:"20"}}</p>
 
 <p>Bio: {{bio | cut:" "}}</p>
 
@@ -37,9 +36,16 @@
 
 <p>Name List: {{ name | make_list }}</p>
 
-<p>Random Hobby: {{ hobby | random }}</p>
+<p>Random Hobby: {{ hobby | random }}</p> 
 
-{% comment %} <p>Adding Hobby: {{ hobby | add:"['Gaming', 'Biking']" }}</p> {% endcomment %}
+
+<p>School: {{school | center:"200"}}</p>
+
+<p>&lt;script&gt;alert(&quot;XSS Attack&quot;)&lt;/script&gt;</p>
+
+{% comment %} Maybe not support in Django - 5 {% endcomment %}
+{% comment %} <p>Adding Hobby: {{ [1, 2, 3] | add:"[4, 5, 6]" }}</p> {% endcomment %}
+
 
 <p>Slice Hobby: {{ hobby | slice:":2" }}</p>
 
@@ -62,7 +68,7 @@
 
 <p>You have {{ hobby | length }} hobby{{ hobby | length | pluralize}}</p>
 <p>You have {{ hobby | length }} hobby{{ hobby | length | pluralize:"ies"}}</p>
-<p>You have {{ hobby | length }} hobb{{ hobby | length | pluralize:"y,ies"}}</p>
+<p>You have {{ hobby | length }} hobb{{ hobby | length | pluralize:"y,ies"}}</p> 
 
 
 
