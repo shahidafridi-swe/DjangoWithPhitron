@@ -7,4 +7,5 @@ urlpatterns = [
     path('form/', views.form, name='form'),
     path('form2/', views.form2, name='form2'),
     path('django_form/', views.djangoForm, name='django_form'),
+    path('validation_form/', views.validationForm, name='validation_form'),
 ]
