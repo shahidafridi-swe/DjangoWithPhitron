@@ -41,17 +41,16 @@ def djangoForm(request):
     return render(request, 'core/django_form.html', context)
 
 
-def validationForm(request):
-    form = ValidationForm()
 
+def validationForm(request):
+    context = {}
+    form = ValidationForm()
     if request.method == 'POST':
         form = ValidationForm(request.POST)
         if form.is_valid():
-            print(form.cleaned_data)
-            return render(request, 'core/validation_form.html', {'form': form})
-        else:
-            return render(request, 'core/validation_form.html', {'form': form})
+            print(form.cleaned_data)  # Process the cleaned data as required
+    context['form'] = form
+    return render(request, 'core/validation_form.html', context)
             
-    else:
-        return render(request, 'core/validation_form.html', {'form': form})
-        
+    
+  
