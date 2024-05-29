@@ -11,12 +11,16 @@
                 <h3 class="">{{post.title}}</h3>
                 <p class=''><a class="text-decoration-none text-success fst-italic" href="#">{{post.author}}</a></p>
                 <P>{{post.content}}</P>
-               
+                <div>
+                    {% for c in post.category.all %}
+                        <button class="btn btn-outline-dark my-1" disabled>{{c}}</button>
+                    {% endfor %}
+                </div>
             </div>
             <div class="col-md-2 text-end">
                     <p><a class="btn btn-outline-dark" href=""><i class="fa fa-eye"></i></a></p>
-                    <p><a class="btn btn-outline-warning" href=""><i class="fa fa-edit"></i></a></p>
-                    <p><a class="btn btn-outline-danger" href=""><i class="fa fa-trash"></i></a></p>
+                    <p><a class="btn btn-outline-warning" href="{% url "update_post" post.id %}"><i class="fa fa-edit"></i></a></p>
+                    <p><a class="btn btn-outline-danger" href="{% url "delete_post" post.id %}"><i class="fa fa-trash"></i></a></p>
             </div>
         </div>
 
