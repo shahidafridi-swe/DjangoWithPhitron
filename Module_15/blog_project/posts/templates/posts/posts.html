@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Posts</h1>
+
+
+{% for post in posts %}
+    <div>
+        <div class="p-3 border border-dark rounded m-1 row d-flex ">
+            <div class="col-md-10">
+                <h3 class="">{{post.title}}</h3>
+                <p class=''><a class="text-decoration-none text-success fst-italic" href="#">{{post.author}}</a></p>
+                <P>{{post.content}}</P>
+               
+            </div>
+            <div class="col-md-2 text-end">
+                    <p><a class="btn btn-outline-dark" href=""><i class="fa fa-eye"></i></a></p>
+                    <p><a class="btn btn-outline-warning" href=""><i class="fa fa-edit"></i></a></p>
+                    <p><a class="btn btn-outline-danger" href=""><i class="fa fa-trash"></i></a></p>
+            </div>
+        </div>
+
+    </div>
+{% endfor %}
+
+
+{% endblock content %}
