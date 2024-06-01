@@ -5,7 +5,8 @@ from .models import Album
 def addAlbum(request):
     if request.method == 'POST':
         form = AlbumForm(request.POST)
-        form.save()
+        if form.is_valid():
+            form.save()
         return redirect('home')
     else:
         form = AlbumForm()
