@@ -1,0 +1,27 @@
+<nav class="navbar navbar-expand-lg bg-dark" data-bs-theme="dark">
+    <div class="container-fluid">
+      <a class="navbar-brand text-warning" href="{% url "home" %}"><span class="text-info fw-bold">B</span>aul<span class="text-info fw-bold">M</span>ela</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link {% if current_page == 'home' %}active{% endif %}" aria-current="page" href="{% url "home" %}">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if current_page == 'add_album' %}active{% endif %}" href="{% url "add_album" %}">Add Album</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if current_page == 'add_musician' %}active{% endif %}" href="{% url "add_musician" %}">Add Musician</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link {% if current_page == 'musicians' %}active{% endif %}" href="{% url "musicians" %}">All Musicians</a>
+          </li>
+          <li class="nav-item">
+            <a class="btn btn-outline-info" href="#">Login</a>
+          </li>
+         
+      </div>
+    </div>
+  </nav>

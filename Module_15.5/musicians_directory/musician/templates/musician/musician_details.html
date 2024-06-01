@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <div class="col-md-7 m-auto">
+        <div>
+            <h2 class="my-font text-info">Details of {{musician.full_name}}...</h2>
+            <div class="border rounded p-5">
+                <h3>Full Name: {{musician.full_name}}</h3>
+                <p>Phone: {{musician.phone}}</p>
+                <p>Email: {{musician.email}}</p>
+                <p>Instrument: {{musician.instrument_type}}</p>
+                <p>Email: {{musician.email}}</p>
+                {% if musician.albums.all %}
+                    <hr>
+                    <h6>Albums:</h6>
+                    {% for album in musician.albums.all %}
+                    <button class="btn btn-outline-warning m-1" disabled> {{album.name}}</button>
+                    {% endfor %}
+                {% endif %}
+                <hr>
+                <div class="d-flex justify-content-between mt-5">
+                    <a class="btn btn-outline-warning" href="{% url "update_musician" musician.id %}"><i class="fa fa-edit"></i> Update Musician</a>
+                <a class="btn btn-outline-danger" href="{% url "delete_musician" musician.id %}">Delete Musician <i class="fa fa-trash"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+{% endblock content %}
