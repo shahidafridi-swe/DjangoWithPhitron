@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<div class="col-md-7 m-auto p-3">
+    <h2>Update User Form</h2>
+    {% load crispy_forms_tags %}
+    <div>
+        <form action="" method="post" novalidate>
+            {% csrf_token %}
+            <!-- {{form|crispy}} -->
+            {% for f in form %}
+            <div class="mb-3">
+                {{f.label_tag}}
+                {{f}}
+                {{f.errors}}    
+            </div>
+            
+            {% endfor %}
+            <input class="btn btn-outline-dark px-5" type="submit" value="Update User">
+        </form>
+    </div>
+</div> 
+
+{% endblock content %}
