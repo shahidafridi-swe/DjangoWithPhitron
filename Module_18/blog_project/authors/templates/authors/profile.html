@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row mt-5 p-3">
+    <div class="col-md-8">
+
+        <h3>Username: {{request.user}}</h3>
+        <h4>First Name: {{request.user.first_name}}</h4>
+        <h4>Last Name: {{request.user.last_name}}</h4>
+        <p>Email: {{request.user.email}}</p>
+    </div>
+    <div class="col-md-4">
+
+        <p><a class="btn btn-outline-dark" href="{% url "update_profile" %}">Update Your Profile</a></p>
+        <p><a class="btn btn-outline-dark" href="{% url "change_password" %}">Change Your Password</a></p>
+    </div>
+</div>
+
+<div>    
+{% for post in posts %}
+<div>
+    <div class="p-3 border border-dark rounded m-1 row d-flex ">
+        <div class="col-md-10">
+            <h3 class="">{{post.title}}</h3>
+            <p class=''><a class="text-decoration-none text-success fst-italic" href="{% url "profile" %}">{{post.author.first_name}} {{post.author.last_name}}</a></p>
+            <P>{{post.content}}</P>
+            <div>
+                {% for c in post.category.all %}
+                    <button class="btn btn-outline-dark my-1" disabled>{{c}}</button>
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-2 text-end">
+                <p><a class="btn btn-outline-dark" href=""><i class="fa fa-eye"></i></a></p>
+                <p><a class="btn btn-outline-dark" href="{% url "update_post" post.id %}"><i class="fa fa-edit"></i></a></p>
+                <p><a class="btn btn-outline-dark" href="{% url "delete_post" post.id %}"><i class="fa fa-trash"></i></a></p>
+        </div>
+    </div>
+
+</div>
+{% endfor %}
+</div>
+
+{% endblock content %}
