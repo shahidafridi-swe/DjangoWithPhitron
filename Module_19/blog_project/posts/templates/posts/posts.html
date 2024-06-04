@@ -1,0 +1,45 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container border border-dark rounded p-2">
+    <p>Filter By:</p>
+    <div class="d-flex row px-3">    
+        {% for category in categories %}
+            <div class="form-check mx-2 col-md-2 m-1">
+                <input class="form-check-input" type="radio" name="category" id="{{category.id}}">
+                <label class="form-check-label" for="{{category.id}}">
+                    <a class="text-decoration-none text-dark" href="{% url "category_wise_posts" category.slug %}">{{category.name}}</a>
+                </label>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+
+{% for post in posts %}
+    <div>
+        <div class="p-3 border border-dark rounded m-1 row d-flex ">
+            <div class="col-md-10">
+                <h3 class="">{{post.title}}</h3>
+                <p class=''><a class="text-decoration-none text-success fst-italic" href="{% url "profile" %}">{{post.author.first_name}} {{post.author.last_name}}</a></p>
+                <P>{{post.content}}</P>
+                <div>
+                    {% for c in post.category.all %}
+                        <button class="btn btn-outline-dark my-1" disabled>{{c.name}}</button>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-md-2 text-end">
+                    <p><a class="btn btn-outline-dark" href=""><i class="fa fa-eye"></i></a></p>
+                    {% if request.user == post.author %}
+                    <p><a class="btn btn-outline-dark" href="{% url "update_post" post.id %}"><i class="fa fa-edit"></i></a></p>
+                    <p><a class="btn btn-outline-dark" href="{% url "delete_post" post.id %}"><i class="fa fa-trash"></i></a></p>
+                    {% endif %}
+            </div>
+        </div>
+
+    </div>
+{% endfor %}
+
+
+{% endblock content %}
