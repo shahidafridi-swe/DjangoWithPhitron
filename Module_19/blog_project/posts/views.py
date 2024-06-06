@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 from django.views.generic import CreateView, UpdateView,DeleteView
 from django.urls import reverse_lazy
 from .models import Post
@@ -35,7 +36,7 @@ def posts(request, category_slug = None):
     
 #     return render(request, 'posts/add_post.html', context)
 
-
+# @method_decorator(login_required, name='dispatch') login required class based decorator
 class AddPost(LoginRequiredMixin,CreateView):
     model = Post
     form_class = PostForm

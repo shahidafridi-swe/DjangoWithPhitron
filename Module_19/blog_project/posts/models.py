@@ -8,3 +8,5 @@ class Post(models.Model):
     content = models.TextField()
     category = models.ManyToManyField(Category)
     author = models.ForeignKey(User, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='posts/media/uploads/', blank=True, null=True)
+    

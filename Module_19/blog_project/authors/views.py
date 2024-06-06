@@ -1,24 +1,14 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
+from django.contrib.auth.views import LoginView, LogoutView
 from django.contrib.auth.forms import AuthenticationForm, PasswordChangeForm
 from django.contrib.auth import authenticate, login, update_session_auth_hash, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django.urls import reverse_lazy
 from .forms import RegisterForm,UpdateUserForm
 from posts.models import Post
-# from .forms import AuthorForm
 
-
-# def addAuthor(request):
-#     if request.method == 'POST':
-#         form = AuthorForm(request.POST)  
-#         if form.is_valid():
-#             form.save()
-#             return redirect('add_author')
-#     else:
-#         form = AuthorForm()
-#     context = {'form': form}
-#     return render(request, 'authors/add_author.html', context)
 
 def registerUser(request):
     if request.user.is_authenticated:
@@ -39,21 +29,15 @@ def loginUser(request):
     if request.user.is_authenticated:
         return redirect('posts')
     if request.method == 'POST':
-        print('inside post method')
         form = AuthenticationForm(request,request.POST)
         username = request.POST['username']
         password = request.POST['password']
         if form.is_valid():
             user = authenticate(username=username, password=password)
             if user is not None:
-                print('inside user is login')
                 login(request, user) 
                 messages.success(request, 'Logged In Successfull !!!')
                 return redirect('posts')
-            else:
-                print('user is None')
-                messages.error(request, 'User Not Found !!!')
-                return redirect('login')
         else:
             try:
                 User.objects.get(username=username)
@@ -62,8 +46,32 @@ def loginUser(request):
                 messages.error(request, 'User Not Found !!!')
     else:
         form = AuthenticationForm()
-    print("finished")
     return render(request, 'authors/login_register_form.html', {'form':form, 'type':'Login'})     
+
+
+class LoginUser(LoginView):
+    template_name = 'authors/login_register_form.html'
+    
+    def get(self, request):
+        if self.request.user.is_authenticated:
+            return redirect('posts')
+    
+    def get_success_url(self):
+        return reverse_lazy('posts')
+    
+    def form_invalid(self, form):
+        messages.success(self.request, 'Logged in Successfull !!!')
+        return super().form_valid()
+    
+    def form_invalid(self, form):
+        messages.error(self.request, 'Wrong Information')
+        return super().form_invalid(form)
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['type'] = 'Login'
+        return context 
+    
 
 
 @login_required(login_url='login')
