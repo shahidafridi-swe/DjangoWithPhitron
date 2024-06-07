@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        {% if post.image %}
+        <img class="w-100" src="{{post.image.url}}" alt="">
+        {% endif %}
+    </div>
+    <div class="col-md-6">
+
+        <h3>{{post.title}}</h3>
+        <p class=''><a class="text-decoration-none text-success fst-italic" href="{% url "profile" %}">{{post.author.first_name}} {{post.author.last_name}}</a></p>
+        <hr>
+        <P>{{post.content }}</P>
+        <hr>
+        <div>
+            {% for c in post.category.all %}
+            <button class="btn btn-outline-dark my-1" disabled>{{c.name}}</button>
+            {% endfor %}
+        </div>
+        <hr>
+        <div class="d-flex">
+            {% if request.user == post.author %}
+            <p><a class="btn btn-outline-dark mx-2 px-5" href="{% url "update_post" post.id %}"><i class="fa fa-edit"></i></a></p>
+            <p><a class="btn btn-outline-dark mx-2 px-5" href="{% url "delete_post" post.id %}"><i class="fa fa-trash"></i></a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
+<hr><hr>
+<div class="row">
+    
+    
+    <div class="col-md-6 border border-dark p-3 rounded">
+        <h4>Add a new comment... </h4>
+        <hr>
+
+        <div>
+            <form action="" method="post">
+                {% csrf_token %}
+                {{comment_form|crispy}}
+                <button class="btn btn-outline-dark px-5">Comment</button>
+            </form>
+        </div>
+    </div>
+
+
+    <div class="col-md-6 border border-dark p-3 rounded">
+        {% if post.comments.count == 0 %}
+            <h4>No Comments...</h4>
+        {% else %}
+            <h4>{{ post.comments.count }} comment{{ post.comments.count|pluralize }}</h4>
+        {% endif %}
+        <hr>
+        {% for comment in post.comments.all %}
+            <div class="comment border border-dark rounded p-3" >
+                <h5 class="text-success fst-italic">{{comment.name}}</h5>
+                <small class="text-start">{{comment.email}}</small>
+                <br>
+                <small class="text-end">{{comment.created_at}}</small>
+                <hr>
+                <p>{{comment.body}}</p>
+            </div>
+        {% endfor %}
+    </div>
+    
+
+</div>
+
+
+{% endblock content %}

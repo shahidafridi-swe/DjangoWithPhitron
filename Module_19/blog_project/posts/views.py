@@ -2,10 +2,10 @@ from django.shortcuts import render, redirect
 from django.contrib.auth.mixins import LoginRequiredMixin,UserPassesTestMixin
 from django.contrib.auth.decorators import login_required
 from django.utils.decorators import method_decorator
-from django.views.generic import CreateView, UpdateView,DeleteView
+from django.views.generic import CreateView, UpdateView,DeleteView, DetailView, FormView
 from django.urls import reverse_lazy
 from .models import Post
-from .forms import PostForm
+from .forms import PostForm, CommentForm
 from categories.models import Category
 
 def posts(request, category_slug = None):
@@ -104,3 +104,74 @@ class DeletePost(LoginRequiredMixin,UserPassesTestMixin,DeleteView):
         post = self.get_object()
         return post.author == self.request.user
     
+
+def postDetails(request, id):
+    post = Post.objects.get(pk=id)
+    
+    if request.method == 'POST':
+        form = CommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.save()
+            return redirect('post_details', id=post.id)
+    else:
+        form = CommentForm()
+        
+    context = {
+        'post' : post,
+        'comment_form' : form
+    }
+    return render(request, 'posts/post_details.html', context)
+
+class PostDetails(DetailView):
+    model = Post
+    template_name = 'posts/post_details.html'
+    pk_url_kwarg = 'id'
+    
+    def post(self, request, *args, **kwargs):
+        comment_form = CommentForm(data=self.request.POST)
+        post = self.get_object()
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post
+            comment.save()
+        return self.get(request, *args, **kwargs)
+        
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        comment_form = CommentForm()
+        context['comment_form'] = comment_form
+        return context
+        
+    
+    
+    
+    
+# class PostDetails(DetailView, FormView):
+#     model = Post
+#     template_name = 'posts/post_details.html'
+#     context_object_name = 'post'
+#     form_class = CommentForm
+
+#     def get_success_url(self):
+#         return reverse_lazy('post_details', kwargs={'id': self.object.id})
+
+#     def get_context_data(self, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         context['comment_form'] = self.get_form()
+#         return context
+
+#     def post(self, request, *args, **kwargs):
+#         self.object = self.get_object()  # get the post object
+#         form = self.get_form()
+#         if form.is_valid():
+#             return self.form_valid(form)
+#         else:
+#             return self.form_invalid(form)
+
+#     def form_valid(self, form):
+#         comment = form.save(commit=False)
+#         comment.post = self.object
+#         comment.save()
+#         return redirect(self.get_success_url())
