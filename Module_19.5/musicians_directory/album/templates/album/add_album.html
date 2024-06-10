@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+{% load crispy_forms_tags %}
+
+<div class="col-md-7 m-auto p-3 border border-info rounded">
+    <div>
+        {% if form_type == 'update' %}
+        <h3 class="my-font text-warning">Let's update the album...</h3>
+        {% else %}
+        <h3 class="my-font text-warning">Let's add a new album...</h3>
+        {% endif %}
+        <hr>
+        <form action="" method="post">
+            {% csrf_token %}
+            {{form | crispy}}
+            {% if form_type == 'update' %}
+            <input type="submit" value="Update Album" class="btn btn-outline-info px-5 w-100">
+            {% else %}
+            <input type="submit" value="Add Album" class="btn btn-outline-info px-5 w-100">
+            {% endif %}
+        </form>
+    </div>
+</div>
+
+{% endblock content %}
