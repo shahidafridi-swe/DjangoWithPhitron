@@ -1,8 +1,6 @@
 {% extends "base.html" %}
 
 {% block content %}
-<h3>User Registration Form </h3>
-<h3>{{request.user}}</h3>
 <div>
     {% if form.non_field_errors %} 
         {% for error in form.non_field_errors %}
@@ -14,7 +12,9 @@
     {% endif %}
 </div>
 
-<div class="col-10 m-auto border p-3 rounded bg-secondary-subtle">
+<div class="col-10 mt-3 m-auto border p-3 rounded bg-secondary-subtle">
+    <h3>Profile of {{request.user}} - {{request.user.account.account_number}}</h3>
+    <hr>
     <form action=""  method="post">
     {% csrf_token %}
     {% for hidden_field in form.hidden_fields %} 
@@ -22,20 +22,6 @@
         {{ hidden_field }} 
     {% endfor %}
     
-    <div class="row mb-2">
-        <div class="col-12">
-            <label for="id_username" class="form-label">{{ form.username.label }}</label>
-            {{form.username}}
-            
-            {% if form.username.errors %} 
-                {% for error in form.username.errors %}
-                    <p class="text-danger fst-italic fw-bold">{{ error }}</p>
-                {% endfor %} 
-            {% endif %}
-        </div>
-    </div>
-
-
     <div class="row mb-2">
         <div class="col-md-6 ">
             <label for="id_first_name" class="form-label">{{ form.first_name.label }}</label>
@@ -84,29 +70,6 @@
     </div>
 
   
-    <div class="row mb-2">
-        <div class="col-md-6 ">
-            <label for="id_password1" class="form-label">{{ form.password1.label }}</label>
-            {{form.password1}}
-            
-            {% if form.password1.errors %} 
-                {% for error in form.password1.errors %}
-                    <p class="text-danger fst-italic fw-bold">{{ error }}</p>
-                {% endfor %} 
-            {% endif %}
-        </div>
-        <div class="col-md-6 ">
-            <label for="id_password2" class="form-label">{{ form.password2.label }}</label>
-            {{form.password2}}
-            
-            {% if form.password2.errors %} 
-                {% for error in form.password2.errors %}
-                    <p class="text-danger fst-italic fw-bold">{{ error }}</p>
-                {% endfor %} 
-            {% endif %}
-        </div>
-    </div>
-
     <div class="row mb-2">
         <div class="col-md-6 ">
             <label for="id_gender" class="form-label">{{ form.gender.label }}</label>
@@ -178,7 +141,7 @@
 
     
     
-    <button type="submit" class="btn btn-primary">update</button>
+    <button type="submit" class="btn btn-dark px-5">update</button>
     </form>
 </div>
 

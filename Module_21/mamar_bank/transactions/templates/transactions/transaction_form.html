@@ -6,16 +6,20 @@
 
 
 <div class="col-5 m-auto border p-3 rounded bg-secondary-subtle mt-5">
-    {% if title == 'Loan Request' %}
-    <div>
-        <a class="fw-bold text-primary text-end text-decoration-none pb-5 pt-10 px-5" href="{% url 'loans' %}">View All Loan List</a>
-        <hr>
-    </div>
-    {% endif %}
-
+    
     <h3>{{title}}</h3>
+    <hr>
     <form action=""  method="post">
     {% csrf_token %}
+        
+        {% if title == 'Transfer Money' %}
+        <div class="mb-3">
+            <label class="form-label" for="transfered_account">
+            Transfered Account Number
+            </label>
+            <input class="form-control" name="transfered_account" id="transfered_account" type="number" required placeholder="Transfered Account Number">
+        </div>
+        {% endif %}
         <div class="mb-3">
             <label class="form-label" for="amount">
             Amount
@@ -28,8 +32,19 @@
             {% endfor %} 
         {% endif %} 
      
-    <button type="submit" class="btn btn-primary">Submit</button>
+    <button type="submit" class="btn btn-dark px-5">Submit</button>
     </form>
+
+
+    <div>
+        {% if title == 'Loan Request' %}
+        <div>
+            <hr>
+            <a class="fw-bold px-5 btn btn-outline-dark " href="{% url 'loans' %}">View All Loan List</a>
+        </div>
+        {% endif %}
+    
+    </div>
 </div>
 
 

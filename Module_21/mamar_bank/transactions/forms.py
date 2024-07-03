@@ -52,6 +52,30 @@ class WithdrawForm(TransactionForm):
         
         return amount
     
+    
+class TransferForm(TransactionForm):
+    def clean_amount(self):
+        account = self.user_account
+        min_transfer_amount = 100
+        max_transfer_amount = 100000
+        balance = account.balance
+        amount = self.cleaned_data.get('amount')
+        if min_transfer_amount > amount :
+            raise forms.ValidationError(
+                f"You have to transfer at least {min_transfer_amount} BDT."
+            )
+        elif max_transfer_amount < amount :
+            raise forms.ValidationError(
+                f"You can't transfer more than {max_transfer_amount} BDT for a single time."
+            )
+        elif balance < amount :
+            raise forms.ValidationError(
+                f"You have {balance} BDT, in your account. \nYou can't transfer more than your account balance."
+            )
+        
+        return amount
+
+    
 class LoanRequestForm(TransactionForm):
     def clean_amount(self):
         amount = self.cleaned_data.get('amount')

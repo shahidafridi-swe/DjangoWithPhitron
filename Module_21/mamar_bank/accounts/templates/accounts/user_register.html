@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+
+<div class="col-10 mt-3 m-auto border p-3 rounded bg-secondary-subtle">
 <h3>User Registration Form </h3>
-<h3>{{request.user}}</h3>
+<hr>
 <div>
     {% if form.non_field_errors %} 
         {% for error in form.non_field_errors %}
@@ -13,8 +16,6 @@
         {% endfor %} 
     {% endif %}
 </div>
-
-<div class="col-10 m-auto border p-3 rounded bg-secondary-subtle">
     <form action=""  method="post">
     {% csrf_token %}
     {% for hidden_field in form.hidden_fields %} 
@@ -178,7 +179,7 @@
 
     
     
-    <button type="submit" class="btn btn-primary">Register</button>
+    <button type="submit" class="btn btn-dark px-5">Register</button>
     </form>
 </div>
 

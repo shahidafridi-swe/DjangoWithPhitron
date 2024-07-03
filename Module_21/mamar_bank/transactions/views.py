@@ -4,9 +4,11 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib import messages
 from django.db.models import Sum
 from datetime import datetime
-from .forms import DepositForm, WithdrawForm, LoanRequestForm
+from .forms import DepositForm, WithdrawForm, LoanRequestForm, TransactionForm
 from .models import Transaction
-from .constants import DEPOSIT, WITHDRAW, LOAN_REQUEST, LOAN_PAY
+from accounts.models import UserBankAccount
+from core.models import Bank
+from .constants import DEPOSIT, WITHDRAW, LOAN_REQUEST, LOAN_PAY, TRANSFER_MONEY, RECIEVED_MONEY
 from django.urls import reverse_lazy
 
 class TransactionCreateMixin(CreateView):
@@ -59,13 +61,18 @@ class WithdrawMoneyView(TransactionCreateMixin):
     
     def form_valid(self, form):
         amount = form.cleaned_data.get('amount')
+        bank = Bank.objects.get(name="Mamar Bank")
         account = self.request.user.account
-        account.balance -= amount
-        
-        account.save(
-            update_fields = ['balance']
-        )
-        messages.success(self.request, f"{amount} BDT has withdrawn successfull from your account!")
+        if bank.is_bankrupt == False:
+            account.balance -= amount
+            account.save(
+                update_fields = ['balance']
+            )
+            messages.success(self.request, f"{amount} BDT has withdrawn successfull from your account!")
+        else:
+            messages.error(self.request, f"Sorry, The Bank is bankrupt now. \nYou can't withdraw money at this moment.")
+            return redirect('withdraw')
+            
         return super().form_valid(form)
     
 
@@ -144,3 +151,40 @@ class LoanListView(LoginRequiredMixin, ListView):
         user_account = self.request.user.account
         queryset = Transaction.objects.filter(account=user_account, transaction_type = LOAN_REQUEST)
         return queryset
+    
+
+class TransferMoneyView(TransactionCreateMixin):
+    form_class = TransactionForm  
+    title = 'Transfer Money'
+    
+    def get_initial(self):
+        initial = {'transaction_type':TRANSFER_MONEY}
+        return initial
+    
+    def form_valid(self, form):
+        amount = form.cleaned_data.get('amount')
+        transfered_account_number = form.cleaned_data.get('transfered_account')
+        account = self.request.user.account
+        print(transfered_account_number)
+        transfered_account = None
+        
+        try:
+            transfered_account = UserBankAccount.objects.get(account_number=transfered_account_number)
+        except UserBankAccount.DoesNotExist:
+            messages.error(self.request, "Sorry, the given account number is not found!")
+            return redirect('transfer_money')
+        
+        if transfered_account:
+            account.balance -= amount
+            transfered_account.balance += amount
+            account.save(update_fields=['balance'])
+            transfered_account.save(update_fields=['balance'])
+            messages.success(self.request, f"{amount} BDT has been successfully transferred from your account to {transfered_account.account_number}!")
+        else:
+            messages.error(self.request, "Sorry, the given account number is not found!")
+            return redirect('transfer_money')
+        return super().form_valid(form)
+        
+    def form_invalid(self, form):
+        messages.error(self.request, "Form is invalid. Please correct the errors.")
+        return super().form_invalid(form)

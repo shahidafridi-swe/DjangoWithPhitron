@@ -5,17 +5,17 @@ from django.contrib.auth import login, logout
 from django.urls import reverse_lazy
 from django.views import View
 from .forms import CustomUserCreationForm, UserUpdateForm
+from django.contrib import messages
 
 class UserRegistrationView(FormView):
     template_name = 'accounts/user_register.html'
-    success_url = reverse_lazy('register')
+    success_url = reverse_lazy('home')
     form_class = CustomUserCreationForm
     
     def form_valid(self, form):
-        print(form.cleaned_data)
         user = form.save()
         login(self.request,user)
-        print(user)
+        messages.success(self.request, f"Account created successfully !!! ")
         return super().form_valid(form)
 
 class UserLoginView(LoginView):
