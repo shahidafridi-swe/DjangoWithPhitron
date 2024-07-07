@@ -33,7 +33,7 @@ const loadDoctors = (value) => {
   document.getElementById("doctors").innerHTML = ""
   document.getElementById("nodata").style.display= "none"
   document.getElementById("loading-doctors").style.display="block"
-  fetch(`https://smart-care.onrender.com/doctor/list/?search=${value?value:""}`)
+  fetch(`https://test-thto.onrender.com/doctor/list/?search=${value?value:""}`)
   .then((res) => res.json())
   .then((data) => {
     document.getElementById("loading-doctors").style.display="none"
@@ -59,7 +59,7 @@ const displayDoctor = (doctors) =>{
     <div class="card">
     <img src=${doctor.image} class="card-img-top " alt="...">
         <div class="card-body">
-        <h5 class="card-title my-text">${doctor.user}</h5>
+        <h5 class="card-title my-text">${doctor.full_name}</h5>
         <h6 class="my-text">${doctor.designation}</h6>
           ${doctor?.specialization?.map((item)=>{
             return `<button class="btn bg-banner text-white" disabled> ${item}</button>`
@@ -81,7 +81,7 @@ const displayDoctor = (doctors) =>{
 loadDoctors();
 
 const loadDesignation = () => {
-  fetch("https://smart-care.onrender.com/doctor/designation/")
+  fetch("https://test-thto.onrender.com/doctor/designation/")
   .then((res)=>res.json())
   .then((data)=> {
     data.forEach((item)=>{
@@ -99,7 +99,7 @@ const loadDesignation = () => {
 loadDesignation();
 
 const loadSpecialist = () => {
-  fetch("https://smart-care.onrender.com/doctor/specialization/")
+  fetch("https://test-thto.onrender.com/doctor/specialization/")
   .then((res)=>res.json())
   .then((data)=> {
     data.forEach((item)=>{

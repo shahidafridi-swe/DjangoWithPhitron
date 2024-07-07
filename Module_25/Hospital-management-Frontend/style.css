@@ -10,6 +10,7 @@
 }
 .my-text{
     color: rgb(4, 69, 76);
+    font-weight: bold;
 }
 .nodata{
     display: none;
