@@ -77,6 +77,7 @@ const handleAppointment = () => {
     const symptom = document.getElementById("inputSymptom").value;
     const appointmentTime = document.getElementById("doctor-appointment-times")
     const selectedAppointmentTime = appointmentTime.options[appointmentTime.selectedIndex];
+    const patient_id = localStorage.getItem("patient_id")
 
     const info = {
         appointment_type: selectedAppointmentType.value,
@@ -84,7 +85,7 @@ const handleAppointment = () => {
         time: selectedAppointmentTime.value,
         symptom: symptom,
         cancel: false,
-        patient: 1,
+        patient: patient_id,
         doctor: param,
       };
       console.log(info)
@@ -99,3 +100,14 @@ const handleAppointment = () => {
     })
 }
 getParams();
+
+const loadPatientId = () => {
+  const user_id = localStorage.getItem("user_id")
+  fetch(`https://test-thto.onrender.com/patient/list/?user_id=7`)
+  .then((res) => res.json())
+  .then((data)=> {
+    localStorage.setItem("patient_id",data[0].id)
+  })
+};
+
+loadPatientId();
